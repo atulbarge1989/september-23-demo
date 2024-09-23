@@ -1,0 +1,47 @@
+# Ingress for UI
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pfs-dash-ui-ingress
+  namespace: pfs-dash
+  annotations:
+    nginx.ingress.kubernetes.io/client-body-buffer-size: 10M
+    nginx.ingress.kubernetes.io/proxy-body-size: 100m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+spec:
+  ingressClassName: ingress-http2-new
+  rules:
+  - host: pfs-dash.mobis.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: pfs-dash-ui-service
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+
+# Ingress for API
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pfs-dash-app-ingress
+  namespace: pfs-dash
+  annotations:
+    nginx.ingress.kubernetes.io/client-body-buffer-size: 10M
+    nginx.ingress.kubernetes.io/proxy-body-size: 100m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+spec:
+  ingressClassName: ingress-http2-new
+  rules:
+  - host: pfs-dash.mobis.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: pfs-dash-app-service
+            port:
+              number: 8080
+        path: /api
+        pathType: Prefix
